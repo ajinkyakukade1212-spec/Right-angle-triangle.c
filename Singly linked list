@@ -1,0 +1,196 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node
+{
+    int data;
+    struct Node *next;
+};
+
+struct Node *head = NULL;
+
+// Insert at end
+void insert(int value)
+{
+    struct Node *newNode, *temp;
+
+    newNode = malloc(sizeof(struct Node));
+
+    if (newNode == NULL)
+    {
+        printf("Memory allocation failed\n");
+        return;
+    }
+
+    newNode->data = value;
+    newNode->next = NULL;
+
+    if (head == NULL)
+    {
+        head = newNode;
+    }
+    else
+    {
+        temp = head;
+
+        while (temp->next != NULL)
+            temp = temp->next;
+
+        temp->next = newNode;
+    }
+}
+
+// Display list
+void display()
+{
+    struct Node *temp = head;
+
+    if (temp == NULL)
+    {
+        printf("List is empty\n");
+        return;
+    }
+
+    while (temp != NULL)
+    {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    }
+
+    printf("NULL\n");
+}
+
+// Search element
+void search(int key)
+{
+    struct Node *temp = head;
+
+    while (temp != NULL)
+    {
+        if (temp->data == key)
+        {
+            printf("Element found\n");
+            return;
+        }
+
+        temp = temp->next;
+    }
+
+    printf("Element not found\n");
+}
+
+// Delete a node by value
+void deleteNode(int key)
+{
+    struct Node *temp = head, *prev = NULL;
+
+    while (temp != NULL && temp->data != key)
+    {
+        prev = temp;
+        temp = temp->next;
+    }
+
+    if (temp == NULL)
+    {
+        printf("Element not found\n");
+        return;
+    }
+
+    if (prev == NULL)
+    {
+        head = temp->next;
+    }
+    else
+    {
+        prev->next = temp->next;
+    }
+
+    free(temp);
+
+    printf("Node deleted\n");
+}
+
+// Main function
+int main()
+{
+    int choice, value;
+
+    while (1)
+    {
+        printf("\n1. Insert");
+        printf("\n2. Display");
+        printf("\n3. Search");
+        printf("\n4. Delete");
+        printf("\n5. Exit");
+
+        printf("\nEnter choice: ");
+        scanf("%d", &choice);
+
+        switch (choice)
+        {
+            case 1:
+                printf("Enter value: ");
+                scanf("%d", &value);
+                insert(value);
+                break;
+
+            case 2:
+                display();
+                break;
+
+            case 3:
+                printf("Enter value to search: ");
+                scanf("%d", &value);
+                search(value);
+                break;
+
+            case 4:
+                printf("Enter value to delete: ");
+                scanf("%d", &value);
+                deleteNode(value);
+                break;
+
+            case 5:
+                exit(0);
+
+            default:
+                printf("Invalid choice\n");
+        }
+    }
+
+    return 0;
+}
+
+
+o/p:
+1. Insert
+2. Display
+3. Search
+4. Delete
+5. Exit
+
+Enter choice: 1
+Enter value: 10
+
+Enter choice: 1
+Enter value: 20
+
+Enter choice: 1
+Enter value: 30
+
+Enter choice: 2
+10 -> 20 -> 30 -> NULL
+
+Enter choice: 3
+Enter value to search: 20
+Element found
+
+Enter choice: 4
+Enter value to delete: 20
+Node deleted
+
+Enter choice: 2
+10 -> 30 -> NULL
+
+Enter choice: 5
