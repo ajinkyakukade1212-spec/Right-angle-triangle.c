@@ -1,0 +1,53 @@
+
+#include <stdio.h>
+
+int main()
+{
+    float arr[100], temp;
+    int n, i, j, minIndex;
+
+    printf("Enter the number of elements: ");
+    scanf("%d", &n);
+
+    printf("Enter %d prices: ", n);
+
+    for (i = 0; i < n; i++)
+    {
+        scanf("%f", &arr[i]);
+    }
+
+    // Selection Sort
+    for (i = 0; i < n - 1; i++)
+    {
+        minIndex = i;
+
+        for (j = i + 1; j < n; j++)
+        {
+            if (arr[j] < arr[minIndex])
+            {
+                minIndex = j;
+            }
+        }
+
+        // Swap minimum element
+        temp = arr[minIndex];
+        arr[minIndex] = arr[i];
+        arr[i] = temp;
+    }
+
+    printf("Prices after Selection Sort:\n");
+
+    for (i = 0; i < n; i++)
+    {
+        printf("%.2f ", arr[i]);
+    }
+
+    return 0;
+}
+
+o/p:
+Enter the number of elements: 5
+Enter 5 prices: 50 20 40 10 30
+
+Prices after Selection Sort:
+10.00 20.00 30.00 40.00 50.00
