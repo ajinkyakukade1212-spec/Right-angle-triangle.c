@@ -1,0 +1,227 @@
+
+#include <stdio.h>
+#include <string.h>
+
+#define MAX 100
+#define SUBJECTS 3
+
+// Structure to store student details
+struct Student {
+    int rollNo;
+    char name[50];
+    int marks[SUBJECTS];
+    int total;
+    float average;
+};
+
+// Global variables
+struct Student students[MAX];
+int count = 0;
+
+// Function to add a student
+void addStudent() {
+    if (count >= MAX) {
+        printf("No space to add more students.\n");
+        return;
+    }
+
+    struct Student s;
+
+    printf("\nEnter Roll No: ");
+    scanf("%d", &s.rollNo);
+
+    printf("Enter Name: ");
+    scanf(" %[^\n]", s.name);
+
+    s.total = 0;
+
+    printf("Enter marks for %d subjects:\n", SUBJECTS);
+
+    int i;
+    for (i = 0; i < SUBJECTS; i++) {
+        printf("Subject %d: ", i + 1);
+        scanf("%d", &s.marks[i]);
+        s.total += s.marks[i];
+    }
+
+    s.average = s.total / (float)SUBJECTS;
+
+    students[count++] = s;
+
+    printf("Student added successfully!\n");
+}
+
+// Function to display all students
+void displayStudents() {
+    if (count == 0) {
+        printf("No students to display.\n");
+        return;
+    }
+
+    printf("\n%-5s %-20s %-10s %-10s\n",
+           "Roll", "Name", "Total", "Average");
+
+    int i;
+    for (i = 0; i < count; i++) {
+        printf("%-5d %-20s %-10d %-10.2f\n",
+               students[i].rollNo,
+               students[i].name,
+               students[i].total,
+               students[i].average);
+    }
+}
+
+// Function to search student by roll number
+void searchStudent() {
+    int roll;
+
+    printf("Enter Roll No to search: ");
+    scanf("%d", &roll);
+
+    int i;
+    for (i = 0; i < count; i++) {
+        if (students[i].rollNo == roll) {
+            printf("\nStudent Found:\n");
+            printf("Name: %s\n", students[i].name);
+            printf("Total: %d\n", students[i].total);
+            printf("Average: %.2f\n", students[i].average);
+
+            printf("Marks: ");
+
+            int j;
+            for (j = 0; j < SUBJECTS; j++) {
+                printf("%d ", students[i].marks[j]);
+            }
+
+            printf("\n");
+            return;
+        }
+    }
+
+    printf("Student with Roll No %d not found.\n", roll);
+}
+
+// Function to sort students by average marks
+void sortStudents() {
+    if (count < 2) {
+        printf("Not enough students to sort.\n");
+        return;
+    }
+
+    int i, j;
+
+    // Bubble Sort in descending order
+    for (i = 0; i < count - 1; i++) {
+        for (j = 0; j < count - i - 1; j++) {
+            if (students[j].average < students[j + 1].average) {
+                struct Student temp = students[j];
+                students[j] = students[j + 1];
+                students[j + 1] = temp;
+            }
+        }
+    }
+
+    printf("Students sorted by average marks.\n");
+}
+
+// Main function
+int main() {
+    int choice;
+
+    do {
+        printf("\n--- Student Management System ---\n");
+        printf("1. Add Student\n");
+        printf("2. Display All Students\n");
+        printf("3. Search by Roll Number\n");
+        printf("4. Sort by Average Marks\n");
+        printf("5. Exit\n");
+
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                addStudent();
+                break;
+
+            case 2:
+                displayStudents();
+                break;
+
+            case 3:
+                searchStudent();
+                break;
+
+            case 4:
+                sortStudents();
+                break;
+
+            case 5:
+                printf("Exiting...\n");
+                break;
+
+            default:
+                printf("Invalid choice. Try again.\n");
+        }
+
+    } while (choice != 5);
+
+    return 0;
+}
+
+
+o/p:
+--- Student Management System ---
+1. Add Student
+2. Display All Students
+3. Search by Roll Number
+4. Sort by Average Marks
+5. Exit
+
+Enter your choice: 1
+
+Enter Roll No: 101
+Enter Name: Ajinkya
+Enter marks for 3 subjects:
+Subject 1: 85
+Subject 2: 90
+Subject 3: 80
+
+Student added successfully!
+
+--- Student Management System ---
+1. Add Student
+2. Display All Students
+3. Search by Roll Number
+4. Sort by Average Marks
+5. Exit
+
+Enter your choice: 2
+
+Roll  Name                 Total      Average
+101   Ajinkya              255        85.00
+
+--- Student Management System ---
+1. Add Student
+2. Display All Students
+3. Search by Roll Number
+4. Sort by Average Marks
+5. Exit
+
+Enter your choice: 3
+
+Enter Roll No to search: 101
+
+Student Found:
+Name: Ajinkya
+Total: 255
+Average: 85.00
+Marks: 85 90 80
+
+--- Student Management System ---
+Enter your choice: 4
+Not enough students to sort.
+
+--- Student Management System ---
+Enter your choice: 5
+Exiting...
